@@ -1,0 +1,70 @@
+name: nomad-dispatch-plugin
+rundeckPluginVersion: 1.2
+author: "@author@"
+date: "@date@"
+version: "@version@"
+url: "@url@"
+providers:
+  - name: nomad-dispatch
+    service: WorkflowNodeStep
+    plugin-type: script
+    description: 'Dispatch Parametrized Nomad job'
+    script-file: nomad-dispatch-plugin
+    config:
+      # Nomad
+      - name: nomad_addr
+        title: address
+        type: String
+        description: if not set, defaults to NOMAD_ADDR env variable if set, else "http://localhost:4646"
+        renderingOptions:
+          grouping: secondary
+          groupName: Nomad
+      - name: nomad_region
+        title: region
+        type: String
+        description: if not set, defaults to NOMAD_REGION env variable if set, else "global"
+        renderingOptions:
+          grouping: secondary
+          groupName: Nomad
+      # Job
+      - name: job_id
+        title: job ID
+        type: String
+        default: ""
+        renderingOptions:
+          grouping: secondary
+          groupName: Job
+      - name: job_meta
+        title: metadata
+        description: job metadata, one per line in format key=value
+        type: String
+        renderingOptions:
+          grouping: secondary
+          groupName: Job
+          displayType: CODE
+          codeSyntaxMode: properties
+      - name: job_payload
+        title: payload
+        description: job payload, size limit of 16384 bytes
+        type: String
+        renderingOptions:
+          grouping: secondary
+          groupName: Job
+          displayType: MULTI_LINE
+      # Client
+      - name: client_retry
+        title: retry count
+        description: Number of retries when failing to poll Nomad data
+        type: Integer
+        default: 3
+        renderingOptions:
+          grouping: secondary
+          groupName: Client
+      - name: client_interval
+        title: interval
+        description: Time interval between Nomad data polls
+        type: String
+        default: 2s
+        renderingOptions:
+          grouping: secondary
+          groupName: Client
